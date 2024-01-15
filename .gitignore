@@ -1,0 +1,8 @@
+.DS_Store
+build
+xcuserdata
+*.pbxuser
+*.xccheckout
+DerivedData
+SourcePackages
+SceneDelegate.swift
