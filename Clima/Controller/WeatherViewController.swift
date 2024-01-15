@@ -10,15 +10,48 @@ import UIKit
 
 class WeatherViewController: UIViewController {
 
+    @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var conditionImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
     
+    var weatherManager = WeatherManager()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        searchTextField.delegate = self
     }
-
-
+    
+    @IBAction func searchPressed(_ sender: UIButton) {
+        searchTextField.endEditing(true)
+    }
+    
 }
 
+extension WeatherViewController: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
+        updateWeatherData(for: textField.text)
+        textField.text = nil
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.endEditing(true)
+        return true
+    }
+
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        let isEmpty = textField.text?.isEmpty ?? false
+        if isEmpty {
+            textField.placeholder = "Enter city name"
+        }
+        return !isEmpty
+    }
+}
+
+extension WeatherViewController {
+    func updateWeatherData(for cityName: String?) {
+        guard let cityName else { return }
+        print(cityName)
+        weatherManager.fetchWeather(cityName: cityName)
+    }
+}
