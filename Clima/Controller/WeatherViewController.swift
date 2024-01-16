@@ -52,6 +52,18 @@ extension WeatherViewController {
     func updateWeatherData(for cityName: String?) {
         guard let cityName else { return }
         print(cityName)
-        weatherManager.fetchWeather(cityName: cityName)
+        weatherManager.fetchWeather(cityName: cityName) {[weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let weatherData):
+                DispatchQueue.main.async {
+                    self.cityLabel.text = weatherData.cityName
+                    self.temperatureLabel.text = String(weatherData.temperatureString)
+                    self.conditionImageView.image = UIImage(systemName: weatherData.icon)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 }
