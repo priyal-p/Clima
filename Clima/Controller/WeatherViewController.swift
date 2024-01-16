@@ -15,7 +15,7 @@ class WeatherViewController: UIViewController {
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
     
-    var weatherManager = WeatherManager()
+    lazy var weatherManager = WeatherManager(delegate: self)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +28,7 @@ class WeatherViewController: UIViewController {
     
 }
 
+//MARK: UITextFieldDelegate
 extension WeatherViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
         updateWeatherData(for: textField.text)
@@ -48,22 +49,25 @@ extension WeatherViewController: UITextFieldDelegate {
     }
 }
 
-extension WeatherViewController {
+private extension WeatherViewController {
     func updateWeatherData(for cityName: String?) {
         guard let cityName else { return }
-        print(cityName)
-        weatherManager.fetchWeather(cityName: cityName) {[weak self] result in
-            guard let self else { return }
-            switch result {
-            case .success(let weatherData):
-                DispatchQueue.main.async {
-                    self.cityLabel.text = weatherData.cityName
-                    self.temperatureLabel.text = String(weatherData.temperatureString)
-                    self.conditionImageView.image = UIImage(systemName: weatherData.icon)
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
+        weatherManager.fetchWeather(cityName: cityName)
+    }
+}
+
+//MARK: WeatherManagerDelegate
+extension WeatherViewController: WeatherManagerDelegate {
+    func didUpdateWeatherData(_ weatherDataResult: WeatherAPIResult) {
+        switch weatherDataResult {
+        case .success(let weatherData):
+            DispatchQueue.main.async {
+                self.cityLabel.text = weatherData.cityName
+                self.temperatureLabel.text = String(weatherData.temperatureString)
+                self.conditionImageView.image = UIImage(systemName: weatherData.icon)
             }
+        case .failure(let error):
+            print(error.localizedDescription)
         }
     }
 }

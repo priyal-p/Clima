@@ -13,7 +13,7 @@ struct WeatherModel {
     let temperature: Double
 
     var temperatureString: String {
-        return String(format: "%.1f", temperature)
+        return String(format: "%.1f", temperature.round(to: 1))
     }
 
     var icon: String {
@@ -61,5 +61,15 @@ struct WeatherModel {
         default:
             return "cloud"
         }
+    }
+}
+
+extension Double {
+    func round(to places: Int) -> Self {
+        let precisionNumber = pow(Double(10), Double(places))
+        var num = self * precisionNumber
+        num.round()
+        num = num / precisionNumber
+        return num
     }
 }
