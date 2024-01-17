@@ -75,7 +75,7 @@ extension WeatherViewController: WeatherManagerDelegate {
                 self.conditionImageView.image = UIImage(systemName: weatherData.icon)
             }
         case .failure(let error):
-            print(error.localizedDescription)
+            debugPrinterror.localizedDescription)
         }
     }
 }
@@ -84,15 +84,15 @@ extension WeatherViewController: WeatherManagerDelegate {
 
 extension WeatherViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print(locations)
+        debugPrintlocations)
         if let location = locations.last {
             locationManager.stopUpdatingLocation()
-            print("Found users's location: \(location)")
+            debugPrint("Found users's location: \(location)")
             weatherManager.fetchWeather(latitude: String(location.coordinate.latitude), longitude: String(location.coordinate.longitude))
         }
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Failed to find user's location: \(error.localizedDescription)")
+        debugPrint("Failed to find user's location: \(error.localizedDescription)")
     }
 }

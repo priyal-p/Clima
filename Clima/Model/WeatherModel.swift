@@ -25,7 +25,7 @@ struct WeatherModel {
 //                    return "cloud.moon.bolt"
 //                }
 //                else {
-//                    print("cloud.sun.bolt")
+//                    debugPrint("cloud.sun.bolt")
 //                }
 //            }
         case 300...321: // Drizzle

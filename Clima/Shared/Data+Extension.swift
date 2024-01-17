@@ -13,12 +13,12 @@ extension Data {
             let json = try JSONSerialization.jsonObject(with: self, options: [])
             let data = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
             guard let jsonString = String(data: data, encoding: .utf8) else {
-                print("Inavlid data")
+                debugPrint("Inavlid data")
                 return ""
             }
             return jsonString
         } catch {
-            print("Error: \(error.localizedDescription)")
+            debugPrint("Error: \(error.localizedDescription)")
         }
         return ""
     }

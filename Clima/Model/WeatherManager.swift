@@ -26,13 +26,13 @@ class WeatherManager {
     
     func fetchWeather(cityName: String) {
         let urlString = "\(weatherURL)&q=\(cityName)"
-        print(urlString)
+        debugPrint(urlString)
         performRequest(with: urlString)
     }
 
     func fetchWeather(latitude: String, longitude: String) {
         let urlString = "\(weatherURL)&lat=\(latitude)&lon=\(longitude)"
-        print(urlString)
+        debugPrint(urlString)
         performRequest(with: urlString)
     }
 
